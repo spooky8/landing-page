@@ -1,0 +1,8 @@
+export { Companies } from './companies/Companies'
+export { Earnings } from './earnings/Earnings'
+export { Footer } from './footer/Footer'
+export { Hero } from './hero/Hero'
+export { Navbar } from './navbar/Navbar'
+export { Pricing } from './pricing/Pricing'
+export { Status } from './status/Status'
+export { Subscribe } from './subscribe/Subscribe'
