@@ -16,13 +16,13 @@ export const Navbar = () => {
 
 				<ul className={`${showNav ? 'show' : ''}`}>
 					<li onClick={() => setShowNav(false)}>
+						<a href='#about'>О нас</a>
+					</li>
+					<li onClick={() => setShowNav(false)}>
 						<a href='#catalog'>Каталог</a>
 					</li>
 					<li onClick={() => setShowNav(false)}>
 						<a href='#contacts'>Контакты</a>
-					</li>
-					<li onClick={() => setShowNav(false)}>
-						<a href='#about'>О нас</a>
 					</li>
 				</ul>
 
