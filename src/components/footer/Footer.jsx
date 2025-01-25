@@ -30,7 +30,7 @@ export const Footer = () => {
 							<FaTelegram />
 						</a>
 						<a
-							href='#'
+							href='https://wa.me/qr/LO4GIPNKGMA3N1'
 							className='footer__icon'
 							target='_blank'
 							rel='noopener noreferrer'
