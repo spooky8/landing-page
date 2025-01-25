@@ -12,7 +12,7 @@
 	}
 
 	&__logo img {
-		width: 6rem;
+		width: 14rem;
 	}
 
 	ul {
@@ -73,5 +73,11 @@
 
 	.show {
 		display: flex;
+	}
+
+	&__back {
+		display: flex;
+		align-items: center;
+		gap: 0.2rem;
 	}
 }

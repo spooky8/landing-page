@@ -1,7 +1,7 @@
 import React from 'react'
 import { IoMdClose } from 'react-icons/io'
 import { IoMenu } from 'react-icons/io5'
-import Logo from '../../assets/Logo.png'
+import Logo from '../../assets/logo/logo_v3.png'
 import './Navbar.scss'
 
 export const Navbar = () => {
@@ -10,31 +10,28 @@ export const Navbar = () => {
 	return (
 		<header className='navbar'>
 			<nav className='navbar__container wrapper'>
-				<a href='#' className='navbar__logo' onClick={() => setShowNav(false)}>
+				<a href='/' className='navbar__logo' onClick={() => setShowNav(false)}>
 					<img src={Logo} alt='Logo' />
 				</a>
 
 				<ul className={`${showNav ? 'show' : ''}`}>
 					<li onClick={() => setShowNav(false)}>
-						<a href='#'>Продукты</a>
+						<a href='#catalog'>Каталог</a>
 					</li>
 					<li onClick={() => setShowNav(false)}>
-						<a href='#'>Компания</a>
+						<a href='#contacts'>Контакты</a>
 					</li>
 					<li onClick={() => setShowNav(false)}>
-						<a href='#'>Цены</a>
-					</li>
-					<li onClick={() => setShowNav(false)}>
-						<a href='#'>Блог</a>
+						<a href='#about'>О нас</a>
 					</li>
 				</ul>
 
-				<div className='navbar__btns'>
+				{/* <div className='navbar__btns'>
 					<a href='#'>Вход</a>
 					<a href='#' className='btn'>
 						Регистрация
 					</a>
-				</div>
+				</div> */}
 
 				<div className='navbar__menu' onClick={() => setShowNav(!showNav)}>
 					{showNav ? <IoMdClose /> : <IoMenu />}

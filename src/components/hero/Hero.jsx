@@ -1,7 +1,7 @@
 import Aos from 'aos'
 import 'aos/dist/aos.css'
 import React from 'react'
-import Mob from '../../assets/Mob.png'
+import Mob from '../../assets/logo/Mob.png'
 import './Hero.scss'
 
 export const Hero = () => {
@@ -10,24 +10,22 @@ export const Hero = () => {
 	}, [])
 
 	return (
-		<section className='hero'>
+		<section id='about' className='hero'>
 			<div className='hero__container wrapper'>
 				<div className='hero__left' data-aos='fade-right'>
 					<img src={Mob} alt='hero' />
 				</div>
 
 				<div className='hero__right' data-aos='zoom-in-up'>
-					<h1>Lorem Ipsum</h1>
+					<h1>СибирьМетМонтаж</h1>
 					<p>
-						It is a long established fact that a reader will be distracted by
-						the readable content of a page when looking at its layout. The point
-						of using Lorem Ipsum is that it has a more-or-less normal
-						distribution of letters, as opposed to using Content here, content
-						here, making it look like readable English.
+						Компания, которая специализируется на изготовлении и установке
+						металлоконструкций. Мы предлагаем широкий спектр услуг -
+						<br /> от откатных и распашных ворот до лестниц, навесов и заборов.
 					</p>
-					<a href='#' className='btn'>
+					{/*<a href='#' className='btn'>
 						Lorem Ipsum
-					</a>
+					</a> */}
 				</div>
 			</div>
 		</section>

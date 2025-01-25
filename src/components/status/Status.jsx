@@ -1,7 +1,7 @@
 import Aos from 'aos'
 import 'aos/dist/aos.css'
 import React from 'react'
-import StatusImg from '../../assets/status.png'
+import StatusImg from '../../assets/earnings_v4.png'
 import './Status.scss'
 
 export const Status = () => {
@@ -13,16 +13,22 @@ export const Status = () => {
 		<section className='status'>
 			<div className='status__container wrapper'>
 				<div className='status__left' data-aos='zoom-in-up'>
-					<h2>Lorem Ipsum is simply dummy text</h2>
+					<h2>
+						Качество, <br />
+						Индивидуальный подход, <br />
+						Доступные цены
+					</h2>
 					<p>
-						Lorem Ipsum is simply dummy text of the printing and typesetting
-						industry. Lorem Ipsum has been the standard dummy text ever since
-						the 1500s, when an unknown printer took a galley of type and
-						scrambled it to make a type specimen book.
+						Мы используем только качественные материалы и современное
+						оборудование для изготовления металлоконструкций. Наши специалисты
+						имеют большой опыт работы в этой области. <br />
+						Мы учитываем все пожелания клиента и создаём металлоконструкции,
+						которые соответствуют его потребностям и бюджету. <br />
+						Мы предлагаем конкурентоспособные цены на наши услуги.
 					</p>
-					<a href='#' className='btn'>
+					{/* <a href='#' className='btn'>
 						KNOW MORE
-					</a>
+					</a> */}
 				</div>
 
 				<div className='status__right' data-aos='fade-left'>

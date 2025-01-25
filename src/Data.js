@@ -1,6 +1,10 @@
-import Icon1 from './assets/icon-1.png'
-import Icon2 from './assets/icon-2.png'
-import Icon3 from './assets/icon-3.png'
+import Icon3 from './assets/product-icons/заборы.png'
+import Icon5 from './assets/product-icons/крыльцо.png'
+import Icon6 from './assets/product-icons/лестницы.png'
+import Icon4 from './assets/product-icons/навесы.png'
+import Icon1 from './assets/product-icons/откатные_ворота.png'
+import Icon7 from './assets/product-icons/пожарные_лестницы.png'
+import Icon2 from './assets/product-icons/распашные_ворота.png'
 import Company1 from './assets/быстро.png'
 import Company3 from './assets/качественно.png'
 import Company2 from './assets/надежно.png'
@@ -38,17 +42,37 @@ export const companyInfo = [
 export const pricingInfo = [
 	{
 		image: Icon1,
-		name: 'Bitcoin',
-		price: '31,020.564 $',
+		name: 'Откатные ворота',
+		price: 'от 1 870 000 р.',
 	},
 	{
 		image: Icon2,
-		name: 'Ethereum',
-		price: '4.4668 $',
+		name: 'Распашные ворота',
+		price: 'от 270 000 р.',
 	},
 	{
 		image: Icon3,
-		name: 'Ripple',
-		price: '0.6549 $',
+		name: 'Заборы',
+		price: 'от 39 000 р.',
+	},
+	{
+		image: Icon4,
+		name: 'Навесы, парковки',
+		price: 'от 39 000 р.',
+	},
+	{
+		image: Icon5,
+		name: 'Крыльцо',
+		price: 'от 39 000 р.',
+	},
+	{
+		image: Icon6,
+		name: 'Лестницы',
+		price: 'от 39 000 р.',
+	},
+	{
+		image: Icon7,
+		name: 'Пожарные лестницы',
+		price: 'от 39 000 р.',
 	},
 ]
