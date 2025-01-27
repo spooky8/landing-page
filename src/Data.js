@@ -43,22 +43,22 @@ export const pricingInfo = [
 	{
 		image: Icon1,
 		name: 'Откатные ворота',
-		price: 'от 1 870 000 р.',
+		price: 'от 37 000 р.',
 	},
 	{
 		image: Icon2,
 		name: 'Распашные ворота',
-		price: 'от 270 000 р.',
+		price: 'от 25 000 р.',
 	},
 	{
 		image: Icon3,
 		name: 'Заборы',
-		price: 'от 39 000 р.',
+		price: 'от 10 000 р.',
 	},
 	{
 		image: Icon4,
 		name: 'Навесы, парковки',
-		price: 'от 39 000 р.',
+		price: 'от 17 000 р.',
 	},
 	{
 		image: Icon5,
