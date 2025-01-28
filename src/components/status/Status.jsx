@@ -12,7 +12,7 @@ export const Status = () => {
 	return (
 		<section className='status'>
 			<div className='status__container wrapper'>
-				<div className='status__left' data-aos='zoom-in-up'>
+				<div className='status__left' data-aos='fade-right'>
 					<h2>
 						Качество, <br />
 						Индивидуальный подход, <br />
@@ -31,7 +31,7 @@ export const Status = () => {
 					</a> */}
 				</div>
 
-				<div className='status__right' data-aos='fade-left'>
+				<div className='status__right' data-aos='zoom-in-up'>
 					<img src={StatusImg} alt='status' />
 				</div>
 			</div>
