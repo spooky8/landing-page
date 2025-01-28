@@ -1,0 +1,10 @@
+---
+version: "3.3"
+
+name: sibir-met-montaj
+
+services:
+  frontend:
+    build: .
+    volumes:
+      - ./sibir-met-montaj.rf:/app/dist
