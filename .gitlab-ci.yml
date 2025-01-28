@@ -65,8 +65,6 @@ build_images:
     - if: '$ENV == "main"'
 
   script:
-    - cp $CONFIG config/.env
-
     - echo "mkdir -p /kaniko/.docker"
     - mkdir -p /kaniko/.docker
 
