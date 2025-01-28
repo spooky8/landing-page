@@ -1,0 +1,136 @@
+stages:
+  - build
+  - deploy
+
+variables:
+  IMAGE_PATH: "$CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME"
+  ENVIRONMENT:
+    value: "N/A"
+    options:
+      - "N/A"
+      - "dev"
+      - "main"
+      - "prod"
+    description: "Deployment environment"
+
+.stage_server: &stage_server
+  SSH_USER: $STAGE_USER
+  SSH_HOST: $STAGE_HOST
+  SSH_KEY: $STAGE_SSH_KEY
+
+.prod_server: &prod_server
+  SSH_USER: $PROD_USER
+  SSH_HOST: $PROD_HOST
+  SSH_KEY: $PROD_SSH_KEY
+
+workflow:
+  rules:
+    - if: "$ENVIRONMENT == 'N/A' && $CI_PIPELINE_SOURCE == 'web'"
+      when: never
+
+    - if: '$CI_COMMIT_REF_NAME == "dev" && $CI_PIPELINE_SOURCE != "web" ||
+        ($CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "dev") ||
+        $ENVIRONMENT == "dev"'
+      variables:
+        IMAGE_NAME: "$IMAGE_PATH:$IMAGE_TAG"
+        IMAGE_TAG: "dev-$CI_COMMIT_SHORT_SHA"
+        ENV: "dev"
+
+    - if: '$CI_COMMIT_REF_NAME == "main" && $CI_PIPELINE_SOURCE != "web" ||
+        ($CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "main") ||
+        $ENVIRONMENT == "main"'
+      variables:
+        IMAGE_NAME: "$IMAGE_PATH:$IMAGE_TAG"
+        IMAGE_TAG: "prod-$CI_COMMIT_SHORT_SHA"
+        ENV: "main"
+
+    - if: '$CI_PIPELINE_SOURCE == "web" && $CI_COMMIT_TAG =~ /^v\d+\.\d+\.\d+-release$/'
+      variables:
+        IMAGE_NAME: "$IMAGE_PATH:$IMAGE_TAG"
+        IMAGE_TAG: "$CI_COMMIT_TAG"
+        ENV: "prod"
+
+build_images:
+  stage: build
+  image:
+    name: gcr.io/kaniko-project/executor:v1.23.2-debug
+    entrypoint: [""]
+  environment:
+    name: $ENV
+  tags:
+    - shared
+  rules:
+    - if: '$ENV == "dev"'
+    - if: '$ENV == "prod"'
+    - if: '$ENV == "main"'
+
+  script:
+    - cp $CONFIG config/.env
+
+    - echo "mkdir -p /kaniko/.docker"
+    - mkdir -p /kaniko/.docker
+
+    - echo "echo '{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}' > /kaniko/.docker/config.json"
+    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
+
+    - echo "/kaniko/executor --cache --cache-repo $CI_REGISTRY_IMAGE --compressed-caching=false --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination $IMAGE_NAME"
+    - /kaniko/executor --cache=false --cache-repo $CI_REGISTRY_IMAGE --compressed-caching=false --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination $IMAGE_NAME
+
+deploy:
+  stage: deploy
+  environment:
+    name: $ENV
+  tags:
+    - shell
+  rules:
+    - if: '$ENV == "prod" || $ENV == "main" && $CI_PIPELINE_SOURCE == "web"'
+      variables:
+        <<: *prod_server
+    - if: '$ENV == "dev" && $CI_PIPELINE_SOURCE != "merge_request_event"'
+      variables:
+        <<: *stage_server
+  variables:
+    PROJECT_NAME: $CI_PROJECT_NAME
+    REGISTRY_IMAGE: $IMAGE_PATH
+    TAG: $IMAGE_TAG
+    SSH: "ssh -i ~/.ssh/key -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST"
+
+  before_script:
+    - echo "PREPARE SSH"
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+
+    - echo "$SSH_KEY" | base64 -d > ~/.ssh/key
+    - chmod 600 ~/.ssh/key
+
+    - echo "ssh-keyscan -t ed25519 $SSH_HOST >> ~/.ssh/known_hosts"
+    - ssh-keyscan -t ed25519 $SSH_HOST > ~/.ssh/known_hosts
+
+  script:
+    - echo "PREPARE DEPLOY DIR"
+    - mkdir deploy
+
+    - cp $COMPOSE_TEMPLATE deploy/docker-compose.yml
+
+    - echo "START DEPLOY"
+
+    - echo "$SSH << EOF
+      if [ ! -d /opt/$PROJECT_NAME ]; then sudo mkdir -p /opt/$PROJECT_NAME; fi;
+      if [ -f /opt/$PROJECT_NAME/docker-compose.yml ]; then cd /opt/$PROJECT_NAME; docker compose down; fi;
+      docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY;
+      EOF"
+    - |
+      $SSH << EOF
+        if [ ! -d /opt/$PROJECT_NAME ]; then sudo mkdir -p /opt/$PROJECT_NAME; fi
+        if [ -f /opt/$PROJECT_NAME/docker-compose.yml ]; then cd /opt/$PROJECT_NAME; docker compose down; fi
+        docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY;
+      EOF
+
+    - echo "rsync -rclzpogv --force --progress ./docker-compose.yml ${SSH_USER}@${SSH_HOST}:/opt/$PROJECT_NAME/"
+    - rsync -e "ssh -i ~/.ssh/key" --rsync-path="sudo rsync" -rclzpogv --force --progress ./deploy/* ${SSH_USER}@${SSH_HOST}:/opt/${PROJECT_NAME}/
+
+    - echo "$SSH \"cd /opt/$PROJECT_NAME && docker compose up -d\""
+    - $SSH "cd /opt/$PROJECT_NAME && docker compose up -d"
+
+    - echo "$SSH \"cd /opt/$PROJECT_NAME && cp -r ./sibir-met-montaj.rf /opt/nginx/static/"
+    - $SSH "cd /opt/$PROJECT_NAME && cp -r ./sibir-met-montaj.rf /opt/nginx/static/"
