@@ -37,13 +37,13 @@
 		line-height: 1.2;
 
 		@include respond(phone) {
-			font-size: 2.4rem;
+			font-size: 2rem;
 		}
 	}
 
 	p {
 		margin-block: 1.5rem 2.5rem;
 		line-height: 1.5;
-		font-size: 1.4rem;
+		font-size: 1.2rem;
 	}
 }

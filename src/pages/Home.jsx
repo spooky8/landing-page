@@ -1,4 +1,12 @@
-import { Companies, Footer, Hero, Navbar, Pricing, Status } from '../components'
+import {
+	Companies,
+	Entry,
+	Footer,
+	Hero,
+	Navbar,
+	Pricing,
+	Status,
+} from '../components'
 
 const Home = () => {
 	return (
@@ -10,6 +18,7 @@ const Home = () => {
 			<Status />
 			<Pricing />
 			{/* <Subscribe /> */}
+			<Entry />
 			<Footer />
 		</>
 	)

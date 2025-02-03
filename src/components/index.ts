@@ -1,5 +1,6 @@
 export { Companies } from './companies/Companies'
 export { Earnings } from './earnings/Earnings'
+export { Entry } from './entry/Entry'
 export { Footer } from './footer/Footer'
 export { Hero } from './hero/Hero'
 export { Navbar } from './navbar/Navbar'

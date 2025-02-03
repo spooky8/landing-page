@@ -1,7 +1,7 @@
 import React from 'react'
 import { IoMdClose } from 'react-icons/io'
 import { IoMenu } from 'react-icons/io5'
-import Logo from '../../assets/logo/logo_v3.png'
+import Logo from '../../assets/logo/logo_v4.png'
 import './Navbar.scss'
 
 export const Navbar = () => {
