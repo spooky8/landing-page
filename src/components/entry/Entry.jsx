@@ -1,6 +1,7 @@
 import Aos from 'aos'
 import 'aos/dist/aos.css'
 import React, { useState } from 'react'
+import toast from 'react-hot-toast'
 import './Entry.scss'
 
 export const Entry = () => {
@@ -39,15 +40,37 @@ export const Entry = () => {
 			data.append('file', formData.file)
 		}
 
-		try {
-			const response = await fetch(API_URL, {
-				method: 'POST',
-				body: data,
+		toast
+			.promise(
+				fetch(API_URL, {
+					method: 'POST',
+					body: data,
+				})
+					.then(response => {
+						if (!response.ok) {
+							throw new Error('ошибка при отправке формы')
+						}
+						return response
+					})
+					.then(response => {
+						setFormData({
+							name: '',
+							phone: '',
+							email: '',
+							message: '',
+							file: null,
+						})
+						return response
+					}),
+				{
+					loading: 'Отправка формы...',
+					success: 'Форма успешно отправлена!',
+					error: err => `Произошла ошибка: ${err.message}`,
+				}
+			)
+			.catch(error => {
+				console.error('Ошибка:', error)
 			})
-			console.log('ОК:', response)
-		} catch (error) {
-			console.error('Ошибка:', error)
-		}
 	}
 
 	return (
